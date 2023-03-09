@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <title>Addition</title>
+        <style>
+            .overal {
+                text-align: center;
+            }
+            .win {
+                color: green;
+                font-size: 74px;
+            }
+            #question {
+                font-size: 74px;
+                font-family: sans-serif;
+            }
+            #input {
+                width: 300px;
+                font-family: sans-serif;
+            }
+            #score {
+                font-size: 24px;
+                font-family: sans-serif;
+            }
+            .incorrect {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="text/babel">
+            function App() {
+                const [state, setState] = React.useState({
+                    num1: Math.floor(Math.random() * 10),
+                    num2: Math.floor(Math.random() * 10),
+                    response: "",
+                    score: 0,
+                    incorrect: false
+                });
+
+                function updateResponse(event) {
+                    if (!isNaN(event.target.value))
+                    {
+                        setState({
+                            ...state,
+                            response: event.target.value
+                        });
+                    }
+                }
+
+                function inputKeyPress(event) {
+                    if (event.key === "Enter" && state.response != "") {
+                        const answer = parseInt(state.response);
+                        if (answer === state.num1 + state.num2) {
+                            // User got question right
+                            setState({
+                                ...state,
+                                score: state.score + 1,
+                                num1: Math.floor(Math.random() * 10),
+                                num2: Math.floor(Math.random() * 10),
+                                response: "",
+                                incorrect: false
+                            });
+                        } else {
+                            // User got question wrong
+                            setState({
+                                ...state,
+                                score: state.score - 1,
+                                response: "",
+                                incorrect: true
+                            });
+                        }
+                    }
+                }
+
+                function reset() {
+                    setState({
+                        ...state,
+                        score: 0
+                    });
+                }
+
+                if (state.score === 7) {
+                    return (
+                        <div className="overal">
+                            <div class="win">You Won!</div>
+                            <div><button autoFocus={true} onClick={reset}>Return</button></div>
+                        </div>
+                    )
+                }
+
+                return (
+                    <div className="overal">
+                        <div id="question" className={state.incorrect ? "incorrect" : ""}>{state.num1} + {state.num2}</div>
+                        <input id="input" autoFocus={true} onChange={updateResponse} onKeyPress={inputKeyPress} value={state.response} placeholder="Answer & Press Enter"/>
+                        <div id="score">Score: {state.score}</div>
+                    </div>
+                );
+            }
+            ReactDOM.render(<App/>, document.querySelector('#app'));
+        </script>
+    </body>
+</html>
