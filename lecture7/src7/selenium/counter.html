@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Counter</title>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let counter = 0;
+                if(!localStorage.getItem('counter')) {
+                    localStorage.setItem('counter', 0);
+                } else {
+                    localStorage.setItem('counter', 0);
+                }
+                document.querySelector('h1').innerHTML = counter;
+
+                document.querySelector('#increase').addEventListener('click', () => {
+                    //counter = localStorage.getItem('counter');
+                    counter++;
+                    localStorage.setItem('counter', counter);
+                    document.querySelector('h1').innerHTML = counter;
+                });
+                document.querySelector('#decrease').addEventListener('click', () => {
+                    //counter = localStorage.getItem('counter');
+                    counter--;
+                    localStorage.setItem('counter', counter);
+                    document.querySelector('h1').innerHTML = counter;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>0</h1>
+        <button id="increase">+</button>
+        <button id="decrease">-</button>
+    </body>
+</html>
